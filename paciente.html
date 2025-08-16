@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Paciente</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div id="tela-inicial" class="container-central">
+        <h1>SEJA BEM-VINDO</h1>
+        <button id="btn-avisar" class="botao">CLIQUE AQUI PARA AVISAR QUE CHEGOU</button>
+    </div>
+
+    <div id="tela-nome" class="container-central" style="display: none;">
+        <h1>DIGITE SEU NOME COMPLETO</h1>
+        <div class="input-container">
+            <input type="text" id="input-nome" placeholder="Seu nome aqui...">
+        </div>
+        <button id="btn-ok" class="botao">OK</button>
+    </div>
+
+    <div id="tela-chamada">
+        <p style="font-size: 4vw;">Por favor, dirija-se à sala:</p>
+        <h1 id="nome-paciente-chamado"></h1>
+    </div>
+
+    <audio id="audio-chamada" src="audio/chamada.mp3"></audio>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script src="script-paciente.js"></script>
+</body>
+</html>

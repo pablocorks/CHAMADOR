@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Médico</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div style="width: 100%; text-align: center;">
+        <h1>Pacientes na Espera</h1>
+        <table class="tabela-pacientes">
+            <thead>
+                <tr>
+                    <th>Nome do Paciente</th>
+                    <th>Hora de Chegada</th>
+                    <th>Tempo de Espera</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="corpo-tabela">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script src="script-medico.js"></script>
+</body>
+</html>
