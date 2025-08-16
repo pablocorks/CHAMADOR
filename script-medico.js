@@ -1,9 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// Sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBvjcnsHUOX5KYjcpvMZFe-PNLcOGrXMhI",
   authDomain: "chamada-consultorio.firebaseapp.com",
@@ -13,9 +8,6 @@ const firebaseConfig = {
   messagingSenderId: "181820619759",
   appId: "1:181820619759:web:d7eea9128d413f9eeb541a"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 // Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
@@ -62,26 +54,39 @@ pacientesRef.on('child_added', snapshot => {
         <td class="tempo-espera">00:00</td>
         <td><button class="botao">CHAMAR</button></td>
     `;
-    corpoTabela.appendChild(tr);
+    if (corpoTabela) {
+        corpoTabela.appendChild(tr);
+    }
+    
 
     // Adiciona o evento de clique ao botão chamar
-    tr.querySelector('button').addEventListener('click', () => chamarPaciente(id, paciente.nome));
+    const chamarBtn = tr.querySelector('button');
+    if (chamarBtn) {
+        chamarBtn.addEventListener('click', () => chamarPaciente(id, paciente.nome));
+    }
 
     // Inicia o timer para atualizar o tempo de espera
     const tdTempoEspera = tr.querySelector('.tempo-espera');
-    timers[id] = setInterval(() => {
-        tdTempoEspera.textContent = formatarTempoEspera(paciente.horaChegada);
-    }, 1000);
+    if (tdTempoEspera) {
+        timers[id] = setInterval(() => {
+            tdTempoEspera.textContent = formatarTempoEspera(paciente.horaChegada);
+        }, 1000);
+    }
 });
 
 // Ouve por pacientes removidos
 pacientesRef.on('child_removed', snapshot => {
     const id = snapshot.key;
-    const tr = corpoTabela.querySelector(`tr[data-id="${id}"]`);
-    if (tr) {
-        tr.remove();
+    if (corpoTabela) {
+        const tr = corpoTabela.querySelector(`tr[data-id="${id}"]`);
+        if (tr) {
+            tr.remove();
+        }
     }
+    
     // Para o timer associado
-    clearInterval(timers[id]);
-    delete timers[id];
+    if (timers[id]) {
+        clearInterval(timers[id]);
+        delete timers[id];
+    }
 });
