@@ -1,9 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// Sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBvjcnsHUOX5KYjcpvMZFe-PNLcOGrXMhI",
   authDomain: "chamada-consultorio.firebaseapp.com",
@@ -13,9 +8,6 @@ const firebaseConfig = {
   messagingSenderId: "181820619759",
   appId: "1:181820619759:web:d7eea9128d413f9eeb541a"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 // Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
@@ -45,25 +37,30 @@ function mostrarTelaNome() {
 }
 
 // Event Listeners dos botões
-btnAvisar.addEventListener('click', mostrarTelaNome);
+if (btnAvisar) {
+    btnAvisar.addEventListener('click', mostrarTelaNome);
+}
 
-btnOk.addEventListener('click', () => {
-    const nome = inputNome.value.trim();
-    if (nome) {
-        // Envia o nome para o Firebase
-        const dataChegada = new Date().toISOString();
-        database.ref('pacientes').push({
-            nome: nome,
-            horaChegada: dataChegada,
-            status: 'esperando' // status inicial
-        });
-        
-        inputNome.value = ''; // Limpa o campo
-        mostrarTelaInicial(); // Volta para a tela inicial
-    } else {
-        alert('Por favor, digite seu nome.');
-    }
-});
+if (btnOk) {
+    btnOk.addEventListener('click', () => {
+        const nome = inputNome.value.trim();
+        if (nome) {
+            // Envia o nome para o Firebase
+            const dataChegada = new Date().toISOString();
+            database.ref('pacientes').push({
+                nome: nome,
+                horaChegada: dataChegada,
+                status: 'esperando' // status inicial
+            });
+            
+            inputNome.value = ''; // Limpa o campo
+            mostrarTelaInicial(); // Volta para a tela inicial
+        } else {
+            alert('Por favor, digite seu nome.');
+        }
+    });
+}
+
 
 // --- Lógica de Tempo Real para Chamadas ---
 
@@ -76,14 +73,18 @@ chamadaRef.on('value', (snapshot) => {
         // Alguém está sendo chamado
         nomePacienteChamado.textContent = dadosChamada.nome;
         telaChamada.style.display = 'flex';
-        audioChamada.play();
+        if (audioChamada) {
+            audioChamada.play();
+        }
 
         // O médico irá remover a chamada após 10 segundos
     } else {
         // Ninguém está sendo chamado
         telaChamada.style.display = 'none';
-        audioChamada.pause();
-        audioChamada.currentTime = 0; // Reinicia o áudio
+        if (audioChamada) {
+            audioChamada.pause();
+            audioChamada.currentTime = 0; // Reinicia o áudio
+        }
     }
 });
 
