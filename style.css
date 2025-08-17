@@ -1,6 +1,6 @@
 :root {
     --cor-fundo: #F5F5DC; /* Bege Claro */
-    --cor-texto: #5C4033; /* Marrom Escuro */
+    --cor-texto: #440e0b; /* Marrom Escuro */
 }
 
 body {
@@ -228,3 +228,4 @@ p {
     margin-top: 10px;
     width: 200px;
 }
+
