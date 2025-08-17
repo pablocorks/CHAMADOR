@@ -21,20 +21,12 @@ body {
     align-items: center;
     text-align: center;
     height: 100%;
-    position: relative; /* Adicionado para ser a referência da logo */
+    position: relative; 
 }
 
-/* AJUSTADO: Estilo da logo para ficar no rodapé */
-.logo-paciente {
-    position: absolute; /* Posicionamento fixo em relação ao container-central */
-    bottom: 15px; /* Distância menor do fundo */
-    left: 50%; /* Centraliza horizontalmente */
-    transform: translateX(-50%); /* Ajuste fino da centralização */
-    width: 250px; /* Largura fixa */
-    max-width: 90%; /* Garante que não vaze em telas pequenas */
-}
+/* O bloco .logo-paciente foi removido daqui */
 
-/* AJUSTADO: Título principal grande em linha única */
+/* Título principal grande em linha única */
 h1.titulo-grande {
     font-size: 8vw; /* Tamanho ajustado para caber em uma linha */
     width: 90%;
