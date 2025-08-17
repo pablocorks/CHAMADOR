@@ -4,13 +4,14 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     margin: 0;
     padding: 20px;
     height: 100vh;
     box-sizing: border-box;
+    overflow: hidden; /* Impede a rolagem */
 }
 
 .container-central {
@@ -22,8 +23,19 @@ body {
     height: 100%;
 }
 
-h1 {
-    font-size: 2.5em;
+/* NOVO: Estilo para o logo */
+.logo-paciente {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+/* AJUSTADO: Título principal grande */
+h1.titulo-grande {
+    font-size: 10vw; /* Usa a largura da tela como base */
+    width: 90%;
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1;
 }
 
 p {
@@ -38,11 +50,11 @@ p {
     background-color: var(--cor-texto);
     color: var(--cor-fundo);
     border: none;
-    padding: 20px 40px;
-    font-size: 1.5em;
+    padding: 15px 30px;
+    font-size: 1.2em;
     cursor: pointer;
     border-radius: 8px;
-    margin: 10px;
+    margin: 5px;
     text-decoration: none;
     display: inline-block;
 }
@@ -51,21 +63,50 @@ p {
     opacity: 0.9;
 }
 
+/* NOVO: Botão grande com 2 linhas */
+.botao-grande {
+    width: 90%;
+    padding: 25px 10px;
+    font-size: 5vw;
+    font-weight: bold;
+    line-height: 1.2;
+    white-space: pre-wrap; /* Permite a quebra de linha com \n */
+}
+
+/* AJUSTADO: Container de input */
+.input-container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container h1 {
+    font-size: 6vw;
+    width: 90%;
+}
+
 .input-container input {
-    width: 80%;
-    max-width: 400px;
-    padding: 15px;
-    font-size: 1.5em;
-    border: 2px solid var(--cor-texto);
+    width: 100%;
+    padding: 20px;
+    font-size: 1.8em;
+    border: 3px solid var(--cor-texto);
     border-radius: 8px;
     text-align: center;
+    box-sizing: border-box;
+}
+
+/* NOVO: Container do input posicionado mais acima */
+.container-input-alto {
+    justify-content: flex-start;
+    padding-top: 15vh; /* 15% da altura da tela */
 }
 
 /* Tabela do Médico */
 .tabela-pacientes {
-    width: 90%;
+    width: 95%;
     max-width: 1200px;
-    margin-top: 20px;
+    margin: 20px auto;
     border-collapse: collapse;
 }
 
@@ -81,6 +122,12 @@ p {
     color: var(--cor-fundo);
 }
 
+/* NOVO: Estilo para o botão de remover */
+.botao-remover {
+    background-color: #c0392b; /* Vermelho */
+    color: white;
+}
+
 /* Tela de Chamada do Paciente */
 #tela-chamada {
     position: fixed;
@@ -89,21 +136,100 @@ p {
     width: 100%;
     height: 100%;
     background-color: var(--cor-fundo);
-    display: none; /* Começa escondida */
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#tela-chamada p {
+    font-size: 6vw;
+    width: 90%;
+    text-align: center;
 }
 
 #nome-paciente-chamado {
-    font-size: 10vw; /* Tamanho grande e responsivo */
+    font-size: 12vw;
     font-weight: bold;
     animation: piscar 1s infinite;
+    width: 90%;
+    text-align: center;
+    word-wrap: break-word;
 }
 
 @keyframes piscar {
     0% { opacity: 1; }
     50% { opacity: 0.2; }
     100% { opacity: 1; }
+}
+
+/* NOVO: Overlay para mensagem de "Obrigado" */
+.overlay-mensagem {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: none; /* Começa escondido */
+    justify-content: center;
+    align-items: center;
+    font-size: 6vw;
+    text-align: center;
+    z-index: 2000;
+}
+
+/* NOVO: Estilo para mostrar o último paciente chamado */
+.ultimo-chamado {
+    margin-top: 30px;
+    padding: 15px;
+    border: 2px solid var(--cor-texto);
+    border-radius: 8px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.ultimo-chamado h3 {
+    margin: 0 0 10px 0;
+    font-size: 3vw;
+}
+
+.ultimo-chamado p {
+    margin: 0;
+    font-size: 4vw;
+    font-weight: bold;
+}
+
+/* NOVO: Estilo para a tela de senha */
+#overlay-senha {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cor-fundo);
+    z-index: 3000;
+    display: none; /* Começa escondido */
+}
+
+#senha-box {
+    text-align: center;
+}
+
+#senha-box label {
+    font-size: 1.5em;
+}
+
+#input-senha {
+    padding: 10px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid var(--cor-texto);
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 200px;
 }
