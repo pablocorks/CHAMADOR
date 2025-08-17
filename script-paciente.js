@@ -118,12 +118,12 @@ if (btnOk) {
             
             inputNome.value = '';
             
-            // Mostra mensagem de "Obrigado"
+            // Mostra mensagem de "Obrigado" por 6 segundos (TEMPO DOBRADO)
             overlayObrigado.style.display = 'flex';
             setTimeout(() => {
                 overlayObrigado.style.display = 'none';
                 mostrarTelaInicial();
-            }, 6000);
+            }, 6000); // <-- VALOR ALTERADO AQUI
 
         } else {
             alert('Por favor, digite seu nome.');
@@ -140,36 +140,12 @@ chamadaRef.on('value', (snapshot) => {
     if (dadosChamada && dadosChamada.nome) {
         nomePacienteChamado.textContent = dadosChamada.nome;
         telaChamada.style.display = 'flex';
+        if (audioChamada) audioChamada.play();
 
-        // --- LÓGICA DE ÁUDIO DUPLO ---
-        if (audioChamada) {
-            // Toca o som pela primeira vez
-            audioChamada.play();
-
-            // Define uma função para ser executada quando o som terminar
-            audioChamada.onended = function() {
-                // Toca o som pela segunda vez
-                audioChamada.play();
-                
-                // Remove a função para que ela não toque uma terceira vez
-                audioChamada.onended = null;
-            };
-        }
-        // --- FIM DA LÓGICA DE ÁUDIO DUPLO ---
-
-        // A tela de chamada sumirá após 10 segundos
         setTimeout(() => {
             telaChamada.style.display = 'none';
-        }, 15000);
-
-    } else {
-        // Se não houver chamada, garante que a tela e o som parem
-        telaChamada.style.display = 'none';
-        if (audioChamada) {
-            audioChamada.pause();
-            audioChamada.currentTime = 0;
-            audioChamada.onended = null; // Limpa qualquer evento pendente
-        }
+            database.ref('chamada_atual').remove();
+        }, 10000);
     }
 });
 
