@@ -17,12 +17,72 @@ const database = firebase.database();
 const telaInicial = document.getElementById('tela-inicial');
 const telaNome = document.getElementById('tela-nome');
 const telaChamada = document.getElementById('tela-chamada');
+const overlayObrigado = document.getElementById('overlay-obrigado');
+const overlaySenha = document.getElementById('overlay-senha');
 
 const btnAvisar = document.getElementById('btn-avisar');
 const btnOk = document.getElementById('btn-ok');
 const inputNome = document.getElementById('input-nome');
 const nomePacienteChamado = document.getElementById('nome-paciente-chamado');
 const audioChamada = document.getElementById('audio-chamada');
+
+const containerUltimoChamado = document.getElementById('container-ultimo-chamado');
+const ultimoNome = document.getElementById('ultimo-nome');
+
+const inputSenha = document.getElementById('input-senha');
+const btnConfirmarSenha = document.getElementById('btn-confirmar-senha');
+const btnCancelarSaida = document.getElementById('btn-cancelar-saida');
+
+// --- Lógica de Kiosk Mode (Tela Cheia e Senha) ---
+let isLocked = false;
+
+function enterKioskMode() {
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) { /* Firefox */
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) { /* IE/Edge */
+        element.msRequestFullscreen();
+    }
+    isLocked = true;
+}
+
+function exitKioskMode() {
+    isLocked = false;
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+}
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && isLocked) {
+        // Usuário tentou sair, mostrar tela de senha
+        overlaySenha.style.display = 'flex';
+    }
+});
+
+btnConfirmarSenha.addEventListener('click', () => {
+    if (inputSenha.value === '1803') {
+        exitKioskMode();
+        overlaySenha.style.display = 'none';
+        inputSenha.value = '';
+    } else {
+        alert('Senha incorreta!');
+        inputSenha.value = '';
+        enterKioskMode(); // Força a volta para tela cheia
+        overlaySenha.style.display = 'none';
+    }
+});
+
+btnCancelarSaida.addEventListener('click', () => {
+    enterKioskMode(); // Força a volta para tela cheia
+    overlaySenha.style.display = 'none';
+    inputSenha.value = '';
+});
+
 
 // Funções para trocar de tela
 function mostrarTelaInicial() {
@@ -31,9 +91,13 @@ function mostrarTelaInicial() {
 }
 
 function mostrarTelaNome() {
+    // Entra em modo Kiosk na primeira interação importante
+    if (!isLocked) {
+        enterKioskMode();
+    }
     telaInicial.style.display = 'none';
     telaNome.style.display = 'flex';
-    inputNome.focus(); // Foca no campo de texto para o teclado abrir
+    inputNome.focus();
 }
 
 // Event Listeners dos botões
@@ -45,56 +109,61 @@ if (btnOk) {
     btnOk.addEventListener('click', () => {
         const nome = inputNome.value.trim();
         if (nome) {
-            // Envia o nome para o Firebase
             const dataChegada = new Date().toISOString();
             database.ref('pacientes').push({
                 nome: nome,
                 horaChegada: dataChegada,
-                status: 'esperando' // status inicial
+                status: 'esperando'
             });
             
-            inputNome.value = ''; // Limpa o campo
-            mostrarTelaInicial(); // Volta para a tela inicial
+            inputNome.value = '';
+            
+            // Mostra mensagem de "Obrigado" por 3 segundos
+            overlayObrigado.style.display = 'flex';
+            setTimeout(() => {
+                overlayObrigado.style.display = 'none';
+                mostrarTelaInicial();
+            }, 3000);
+
         } else {
             alert('Por favor, digite seu nome.');
         }
     });
 }
 
+// --- Lógica de Tempo Real ---
 
-// --- Lógica de Tempo Real para Chamadas ---
-
+// Ouve por chamadas
 const chamadaRef = database.ref('chamada_atual');
-
 chamadaRef.on('value', (snapshot) => {
     const dadosChamada = snapshot.val();
-
     if (dadosChamada && dadosChamada.nome) {
-        // Alguém está sendo chamado
         nomePacienteChamado.textContent = dadosChamada.nome;
         telaChamada.style.display = 'flex';
-        if (audioChamada) {
-            audioChamada.play();
-        }
+        if (audioChamada) audioChamada.play();
 
-        // O médico irá remover a chamada após 10 segundos
-    } else {
-        // Ninguém está sendo chamado
-        telaChamada.style.display = 'none';
-        if (audioChamada) {
-            audioChamada.pause();
-            audioChamada.currentTime = 0; // Reinicia o áudio
-        }
+        setTimeout(() => {
+            telaChamada.style.display = 'none';
+            database.ref('chamada_atual').remove();
+        }, 10000);
     }
 });
 
-// Registrar o Service Worker (para o PWA)
+// Ouve pelo último paciente chamado para exibir na tela inicial
+const ultimoChamadoRef = database.ref('ultimo_chamado');
+ultimoChamadoRef.on('value', (snapshot) => {
+    const ultimo = snapshot.val();
+    if (ultimo && ultimo.nome) {
+        ultimoNome.textContent = ultimo.nome;
+        containerUltimoChamado.style.display = 'block';
+    } else {
+        containerUltimoChamado.style.display = 'none';
+    }
+});
+
+// Registrar o Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('SW registrado: ', registration);
-        }).catch(registrationError => {
-            console.log('SW falhou: ', registrationError);
-        });
+        navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW Registrado')).catch(err => console.log('SW Falhou', err));
     });
 }
