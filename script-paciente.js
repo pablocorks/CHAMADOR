@@ -118,12 +118,12 @@ if (btnOk) {
             
             inputNome.value = '';
             
-            // Mostra mensagem de "Obrigado" por 3 segundos
+            // Mostra mensagem de "Obrigado" por 6 segundos (TEMPO DOBRADO)
             overlayObrigado.style.display = 'flex';
             setTimeout(() => {
                 overlayObrigado.style.display = 'none';
                 mostrarTelaInicial();
-            }, 3000);
+            }, 6000); // <-- VALOR ALTERADO AQUI
 
         } else {
             alert('Por favor, digite seu nome.');
