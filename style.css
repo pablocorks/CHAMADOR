@@ -27,20 +27,21 @@ body {
 /* AJUSTADO: Estilo da logo para ficar no rodapé */
 .logo-paciente {
     position: absolute; /* Posicionamento fixo em relação ao container-central */
-    bottom: 5px; /* Distância do fundo */
+    bottom: 15px; /* Distância menor do fundo */
     left: 50%; /* Centraliza horizontalmente */
     transform: translateX(-50%); /* Ajuste fino da centralização */
     width: 250px; /* Largura fixa */
     max-width: 90%; /* Garante que não vaze em telas pequenas */
 }
 
-/* Título principal grande */
+/* AJUSTADO: Título principal grande em linha única */
 h1.titulo-grande {
-    font-size: 10vw; /* Usa a largura da tela como base */
+    font-size: 8vw; /* Tamanho ajustado para caber em uma linha */
     width: 90%;
     margin-top: 0;
     margin-bottom: 20px;
     line-height: 1;
+    white-space: nowrap; /* Força o texto a ficar em uma linha */
 }
 
 p {
@@ -237,5 +238,3 @@ p {
     margin-top: 10px;
     width: 200px;
 }
-
-
