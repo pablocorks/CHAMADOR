@@ -27,10 +27,10 @@ body {
 /* AJUSTADO: Estilo da logo para ficar no rodapé */
 .logo-paciente {
     position: absolute; /* Posicionamento fixo em relação ao container-central */
-    bottom: 30px; /* Distância do fundo */
+    bottom: 0px; /* Distância do fundo */
     left: 50%; /* Centraliza horizontalmente */
     transform: translateX(-50%); /* Ajuste fino da centralização */
-    width: 500px; /* Largura fixa */
+    width: 250px; /* Largura fixa */
     max-width: 90%; /* Garante que não vaze em telas pequenas */
 }
 
@@ -237,3 +237,4 @@ p {
     margin-top: 10px;
     width: 200px;
 }
+
