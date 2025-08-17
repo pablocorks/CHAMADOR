@@ -15,29 +15,38 @@ const database = firebase.database();
 const pacientesRef = database.ref('pacientes');
 
 const corpoTabela = document.getElementById('corpo-tabela');
-const timers = {}; // Objeto para guardar os IDs dos timers de cada paciente
+const timers = {};
 
 function formatarTempoEspera(dataChegada) {
     const agora = new Date();
     const chegada = new Date(dataChegada);
     const diffMs = agora - chegada;
-
     const diffSegs = Math.floor(diffMs / 1000);
     const minutos = Math.floor(diffSegs / 60);
     const segundos = diffSegs % 60;
-
     return `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
 }
 
+// NOVO: Função apenas para chamar (não remove)
 function chamarPaciente(id, nome) {
     // 1. Define o paciente que está sendo chamado no banco
     database.ref('chamada_atual').set({ id: id, nome: nome });
+    // 2. Define o paciente como o "último chamado" para exibição
+    database.ref('ultimo_chamado').set({ id: id, nome: nome });
+}
 
-    // 2. Após 10 segundos, remove a chamada e o paciente da lista de espera
-    setTimeout(() => {
-        database.ref('chamada_atual').remove();
-        pacientesRef.child(id).remove();
-    }, 10000); // 10 segundos
+// NOVO: Função para remover o paciente da lista
+function removerPaciente(id) {
+    // Remove o paciente da lista de espera
+    pacientesRef.child(id).remove();
+
+    // Verifica se o paciente removido era o "último chamado" e limpa
+    database.ref('ultimo_chamado').once('value', (snapshot) => {
+        const ultimo = snapshot.val();
+        if (ultimo && ultimo.id === id) {
+            database.ref('ultimo_chamado').remove();
+        }
+    });
 }
 
 // Ouve por novos pacientes adicionados
@@ -45,27 +54,25 @@ pacientesRef.on('child_added', snapshot => {
     const paciente = snapshot.val();
     const id = snapshot.key;
 
-    // Cria a linha na tabela
     const tr = document.createElement('tr');
     tr.setAttribute('data-id', id);
+    // AJUSTADO: Adiciona os dois botões
     tr.innerHTML = `
         <td>${paciente.nome}</td>
         <td>${new Date(paciente.horaChegada).toLocaleTimeString('pt-BR')}</td>
         <td class="tempo-espera">00:00</td>
-        <td><button class="botao">CHAMAR</button></td>
+        <td><button class="botao chamar-btn">CHAMAR</button></td>
+        <td><button class="botao botao-remover remover-btn">REMOVER</button></td>
     `;
     if (corpoTabela) {
         corpoTabela.appendChild(tr);
     }
-    
 
-    // Adiciona o evento de clique ao botão chamar
-    const chamarBtn = tr.querySelector('button');
-    if (chamarBtn) {
-        chamarBtn.addEventListener('click', () => chamarPaciente(id, paciente.nome));
-    }
+    // Adiciona eventos aos botões
+    tr.querySelector('.chamar-btn').addEventListener('click', () => chamarPaciente(id, paciente.nome));
+    tr.querySelector('.remover-btn').addEventListener('click', () => removerPaciente(id));
 
-    // Inicia o timer para atualizar o tempo de espera
+    // Inicia o timer
     const tdTempoEspera = tr.querySelector('.tempo-espera');
     if (tdTempoEspera) {
         timers[id] = setInterval(() => {
@@ -79,12 +86,9 @@ pacientesRef.on('child_removed', snapshot => {
     const id = snapshot.key;
     if (corpoTabela) {
         const tr = corpoTabela.querySelector(`tr[data-id="${id}"]`);
-        if (tr) {
-            tr.remove();
-        }
+        if (tr) tr.remove();
     }
     
-    // Para o timer associado
     if (timers[id]) {
         clearInterval(timers[id]);
         delete timers[id];
