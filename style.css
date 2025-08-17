@@ -27,8 +27,8 @@ body {
 .logo-paciente {
     width: 70%; /* Ocupa 70% da largura da tela */
     max-width: 1000px; /* Um limite para não ficar muito grande em telas gigantes */
-    margin-top: 20px; /* Distância de 50px do topo */
-    margin-bottom: 20px;
+    margin-top: 0; /* Distância de 50px do topo */
+    
 }
 
 /* AJUSTADO: Título principal grande */
@@ -45,7 +45,7 @@ p {
 }
 
 .botoes-selecao {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .botao {
@@ -235,3 +235,4 @@ p {
     margin-top: 10px;
     width: 200px;
 }
+
