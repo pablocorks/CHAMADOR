@@ -25,7 +25,9 @@ body {
 
 /* NOVO: Estilo para o logo */
 .logo-paciente {
-    max-width: 200px;
+    width: 70%; /* Ocupa 70% da largura da tela */
+    max-width: 500px; /* Um limite para não ficar muito grande em telas gigantes */
+    margin-top: 50px; /* Distância de 50px do topo */
     margin-bottom: 20px;
 }
 
@@ -233,3 +235,4 @@ p {
     margin-top: 10px;
     width: 200px;
 }
+
