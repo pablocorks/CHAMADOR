@@ -21,17 +21,20 @@ body {
     align-items: center;
     text-align: center;
     height: 100%;
+    position: relative; /* Adicionado para ser a referência da logo */
 }
 
-/* AJUSTADO: Estilo para o logo CORRIGIDO */
+/* AJUSTADO: Estilo da logo para ficar no rodapé */
 .logo-paciente {
-    width: 70%; /* Ocupa 70% da largura da tela */
-    max-width: 1000px; /* Um limite para não ficar muito grande em telas gigantes */
-    margin-top: 0; /* Distância de 50px do topo */
-    
+    position: absolute; /* Posicionamento fixo em relação ao container-central */
+    bottom: 30px; /* Distância do fundo */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Ajuste fino da centralização */
+    width: 500px; /* Largura fixa */
+    max-width: 90%; /* Garante que não vaze em telas pequenas */
 }
 
-/* AJUSTADO: Título principal grande */
+/* Título principal grande */
 h1.titulo-grande {
     font-size: 10vw; /* Usa a largura da tela como base */
     width: 90%;
@@ -45,7 +48,7 @@ p {
 }
 
 .botoes-selecao {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .botao {
@@ -65,17 +68,16 @@ p {
     opacity: 0.9;
 }
 
-/* NOVO: Botão grande com 2 linhas */
+/* Botão grande com 2 linhas */
 .botao-grande {
     width: 90%;
     padding: 25px 10px;
     font-size: 5vw;
     font-weight: bold;
     line-height: 1.2;
-    white-space: pre-wrap;
 }
 
-/* AJUSTADO: Container de input */
+/* Container de input */
 .input-container {
     width: 90%;
     display: flex;
@@ -98,7 +100,7 @@ p {
     box-sizing: border-box;
 }
 
-/* NOVO: Container do input posicionado mais acima */
+/* Container do input posicionado mais acima */
 .container-input-alto {
     justify-content: flex-start;
     padding-top: 15vh; /* 15% da altura da tela */
@@ -124,7 +126,7 @@ p {
     color: var(--cor-fundo);
 }
 
-/* NOVO: Estilo para o botão de remover */
+/* Estilo para o botão de remover */
 .botao-remover {
     background-color: #c0392b; /* Vermelho */
     color: white;
@@ -168,7 +170,7 @@ p {
     100% { opacity: 1; }
 }
 
-/* NOVO: Overlay para mensagem de "Obrigado" */
+/* Overlay para mensagem de "Obrigado" */
 .overlay-mensagem {
     position: fixed;
     top: 0;
@@ -185,7 +187,7 @@ p {
     z-index: 2000;
 }
 
-/* NOVO: Estilo para mostrar o último paciente chamado */
+/* Estilo para mostrar o último paciente chamado */
 .ultimo-chamado {
     margin-top: 30px;
     padding: 15px;
@@ -206,7 +208,7 @@ p {
     font-weight: bold;
 }
 
-/* NOVO: Estilo para a tela de senha */
+/* Estilo para a tela de senha */
 #overlay-senha {
     position: fixed;
     top: 0;
@@ -235,4 +237,3 @@ p {
     margin-top: 10px;
     width: 200px;
 }
-
