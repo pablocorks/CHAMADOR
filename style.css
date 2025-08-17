@@ -23,11 +23,11 @@ body {
     height: 100%;
 }
 
-/* NOVO: Estilo para o logo */
+/* AJUSTADO: Estilo para o logo CORRIGIDO */
 .logo-paciente {
     width: 70%; /* Ocupa 70% da largura da tela */
-    max-width: 500px; /* Um limite para não ficar muito grande em telas gigantes */
-    margin-top: 50px; /* Distância de 50px do topo */
+    max-width: 1000px; /* Um limite para não ficar muito grande em telas gigantes */
+    margin-top: 20px; /* Distância de 50px do topo */
     margin-bottom: 20px;
 }
 
@@ -72,7 +72,7 @@ p {
     font-size: 5vw;
     font-weight: bold;
     line-height: 1.2;
-    white-space: pre-wrap; /* Permite a quebra de linha com \n */
+    white-space: pre-wrap;
 }
 
 /* AJUSTADO: Container de input */
@@ -235,4 +235,3 @@ p {
     margin-top: 10px;
     width: 200px;
 }
-
