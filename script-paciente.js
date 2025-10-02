@@ -59,7 +59,6 @@ function exitKioskMode() {
 
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement && isLocked) {
-        // Usuário tentou sair, mostrar tela de senha
         overlaySenha.style.display = 'flex';
     }
 });
@@ -72,13 +71,13 @@ btnConfirmarSenha.addEventListener('click', () => {
     } else {
         alert('Senha incorreta!');
         inputSenha.value = '';
-        enterKioskMode(); // Força a volta para tela cheia
+        enterKioskMode();
         overlaySenha.style.display = 'none';
     }
 });
 
 btnCancelarSaida.addEventListener('click', () => {
-    enterKioskMode(); // Força a volta para tela cheia
+    enterKioskMode();
     overlaySenha.style.display = 'none';
     inputSenha.value = '';
 });
@@ -91,7 +90,6 @@ function mostrarTelaInicial() {
 }
 
 function mostrarTelaNome() {
-    // Entra em modo Kiosk na primeira interação importante
     if (!isLocked) {
         enterKioskMode();
     }
@@ -118,12 +116,12 @@ if (btnOk) {
             
             inputNome.value = '';
             
-            // Mostra mensagem de "Obrigado" por 6 segundos (TEMPO DOBRADO)
+            // Mostra mensagem de "Obrigado" por 12 segundos (TEMPO DOBRADO)
             overlayObrigado.style.display = 'flex';
             setTimeout(() => {
                 overlayObrigado.style.display = 'none';
                 mostrarTelaInicial();
-            }, 6000); // <-- VALOR ALTERADO AQUI
+            }, 12000); // <-- VALOR ALTERADO AQUI
 
         } else {
             alert('Por favor, digite seu nome.');
@@ -133,23 +131,29 @@ if (btnOk) {
 
 // --- Lógica de Tempo Real ---
 
-// Ouve por chamadas
 const chamadaRef = database.ref('chamada_atual');
 chamadaRef.on('value', (snapshot) => {
     const dadosChamada = snapshot.val();
     if (dadosChamada && dadosChamada.nome) {
         nomePacienteChamado.textContent = dadosChamada.nome;
         telaChamada.style.display = 'flex';
-        if (audioChamada) audioChamada.play();
-
-        setTimeout(() => {
-            telaChamada.style.display = 'none';
-            database.ref('chamada_atual').remove();
-        }, 10000);
+        if (audioChamada) {
+            audioChamada.play();
+            audioChamada.onended = function() {
+                audioChamada.play();
+                audioChamada.onended = null;
+            };
+        }
+    } else {
+        telaChamada.style.display = 'none';
+        if (audioChamada) {
+            audioChamada.pause();
+            audioChamada.currentTime = 0;
+            audioChamada.onended = null; 
+        }
     }
 });
 
-// Ouve pelo último paciente chamado para exibir na tela inicial
 const ultimoChamadoRef = database.ref('ultimo_chamado');
 ultimoChamadoRef.on('value', (snapshot) => {
     const ultimo = snapshot.val();
@@ -164,6 +168,10 @@ ultimoChamadoRef.on('value', (snapshot) => {
 // Registrar o Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW Registrado')).catch(err => console.log('SW Falhou', err));
+        navigator.serviceWorker.register('sw.js').then(registration => {
+            console.log('SW registrado com sucesso: ', registration);
+        }).catch(registrationError => {
+            console.log('SW Falhou', registrationError);
+        });
     });
 }
