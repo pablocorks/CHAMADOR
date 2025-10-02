@@ -12,7 +12,7 @@
 <body>
     <div id="tela-inicial" class="container-central">
         
-        <img src="icons/logo.jpg" alt="Logo do Consultório" class="logo-paciente" onerror="this.style.display='none'">
+        <img src="icons/logo.png" alt="Logo do Consultório" class="logo-paciente" onerror="this.style.display='none'">
 
         <div class="conteudo-principal" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
             <h1 class="titulo-grande">SEJA BEM-VINDO(A)</h1>
@@ -28,7 +28,8 @@
     <div id="tela-nome" class="container-central container-input-alto" style="display: none;">
         <div class="input-container">
             <h1>DIGITE SEU NOME E SOBRENOME</h1>
-            <input type="text" id="input-nome" placeholder="Seu nome aqui...">
+            
+            <input type="text" id="input-nome" placeholder="Seu nome aqui..." autocomplete="off">
         </div>
         <button id="btn-ok" class="botao">OK</button>
     </div>
@@ -61,3 +62,4 @@
     <script src="script-paciente.js"></script>
 </body>
 </html>
+
