@@ -11,7 +11,7 @@ body {
     padding: 20px;
     height: 100vh;
     box-sizing: border-box;
-    overflow: hidden; /* Impede a rolagem */
+    overflow: hidden;
 }
 
 .container-central {
@@ -24,32 +24,26 @@ body {
     position: relative; 
 }
 
-/* AJUSTADO: Estilo para a logo na tela do paciente */
 .logo-paciente {
     position: absolute;
     top: 4cm;
     left: 50%;
     transform: translateX(-50%);
-    width: 60%; /* <-- VALOR ALTERADO AQUI */
-    max-width: 500px; /* <-- VALOR ALTERADO AQUI */
+    width: 60%; 
+    max-width: 500px;
 }
 
-/* Título principal grande em linha única */
 h1.titulo-grande {
-    font-size: 8vw; /* Tamanho ajustado para caber em uma linha */
+    font-size: 8vw;
     width: 90%;
     margin-top: 0;
     margin-bottom: 20px;
     line-height: 1;
-    white-space: nowrap; /* Força o texto a ficar em uma linha */
+    white-space: nowrap;
 }
 
 p {
     font-size: 1.2em;
-}
-
-.botoes-selecao {
-    margin-top: 30px;
 }
 
 .botao {
@@ -69,7 +63,6 @@ p {
     opacity: 0.9;
 }
 
-/* Botão grande com 2 linhas */
 .botao-grande {
     width: 90%;
     padding: 25px 10px;
@@ -78,7 +71,6 @@ p {
     line-height: 1.2;
 }
 
-/* Container de input */
 .input-container {
     width: 90%;
     display: flex;
@@ -101,13 +93,18 @@ p {
     box-sizing: border-box;
 }
 
-/* Container do input posicionado mais acima */
 .container-input-alto {
     justify-content: flex-start;
     padding-top: 15vh;
 }
 
-/* Tabela do Médico */
+.tabela-pacientes, .tabela-pacientes th, .tabela-pacientes td {
+    border: 2px solid var(--cor-texto);
+    padding: 15px;
+    text-align: left;
+    font-size: 1.2em;
+}
+
 .tabela-pacientes {
     width: 95%;
     max-width: 1200px;
@@ -115,25 +112,16 @@ p {
     border-collapse: collapse;
 }
 
-.tabela-pacientes th, .tabela-pacientes td {
-    border: 2px solid var(--cor-texto);
-    padding: 15px;
-    text-align: left;
-    font-size: 1.2em;
-}
-
 .tabela-pacientes th {
     background-color: var(--cor-texto);
     color: var(--cor-fundo);
 }
 
-/* Estilo para o botão de remover */
 .botao-remover {
     background-color: #c0392b;
     color: white;
 }
 
-/* Tela de Chamada do Paciente */
 #tela-chamada {
     position: fixed;
     top: 0;
@@ -157,4 +145,91 @@ p {
 }
 
 #nome-paciente-chamado {
-    font-size:
+    font-size: 12vw;
+    font-weight: bold;
+    animation: piscar 1s infinite;
+    width: 90%;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+@keyframes piscar {
+    0% { opacity: 1; }
+    50% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
+.overlay-mensagem {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 6vw;
+    text-align: center;
+    z-index: 2000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.qr-code-avaliacao {
+    width: 80%;
+    max-width: 300px;
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.ultimo-chamado {
+    margin-top: 30px;
+    padding: 15px;
+    border: 2px solid var(--cor-texto);
+    border-radius: 8px;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.ultimo-chamado h3 {
+    margin: 0 0 10px 0;
+    font-size: 3vw;
+}
+
+.ultimo-chamado p {
+    margin: 0;
+    font-size: 4vw;
+    font-weight: bold;
+}
+
+#overlay-senha {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cor-fundo);
+    z-index: 3000;
+    display: none;
+}
+
+#senha-box {
+    text-align: center;
+}
+
+#senha-box label {
+    font-size: 1.5em;
+}
+
+#input-senha {
+    padding: 10px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid var(--cor-texto);
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 200px;
+}
