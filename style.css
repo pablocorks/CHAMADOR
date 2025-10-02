@@ -1,6 +1,6 @@
 :root {
     --cor-fundo: #F5F5DC; /* Bege Claro */
-    --cor-texto: #440e0b; /* Marrom Escuro */
+    --cor-texto: #5C4033; /* Marrom Escuro */
 }
 
 body {
@@ -22,6 +22,16 @@ body {
     text-align: center;
     height: 100%;
     position: relative; 
+}
+
+/* NOVO: Estilo para a logo na tela do paciente */
+.logo-paciente {
+    position: absolute;
+    top: 4cm;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    max-width: 250px; /* Limite para não ficar muito grande */
 }
 
 /* Título principal grande em linha única */
@@ -94,7 +104,7 @@ p {
 /* Container do input posicionado mais acima */
 .container-input-alto {
     justify-content: flex-start;
-    padding-top: 15vh; /* 15% da altura da tela */
+    padding-top: 15vh;
 }
 
 /* Tabela do Médico */
@@ -119,7 +129,7 @@ p {
 
 /* Estilo para o botão de remover */
 .botao-remover {
-    background-color: #c0392b; /* Vermelho */
+    background-color: #c0392b;
     color: white;
 }
 
@@ -161,21 +171,32 @@ p {
     100% { opacity: 1; }
 }
 
-/* AJUSTADO: Overlay para mensagem de "Obrigado" com fundo mais escuro */
+/* AJUSTADO: Overlay para mensagem de "Obrigado" com flexbox */
 .overlay-mensagem {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* <-- VALOR ALTERADO AQUI */
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    display: none; /* Começa escondido */
+    display: none;
+    flex-direction: column; /* Organiza o texto e a imagem em coluna */
     justify-content: center;
     align-items: center;
     font-size: 6vw;
     text-align: center;
     z-index: 2000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* NOVO: Estilo para a imagem de avaliação (QR Code) */
+.qr-code-avaliacao {
+    width: 80%;
+    max-width: 300px; /* Limite para o tamanho da imagem */
+    margin-top: 30px; /* Espaço entre o texto e a imagem */
+    border-radius: 10px;
 }
 
 /* Estilo para mostrar o último paciente chamado */
@@ -208,7 +229,7 @@ p {
     height: 100%;
     background-color: var(--cor-fundo);
     z-index: 3000;
-    display: none; /* Começa escondido */
+    display: none;
 }
 
 #senha-box {
@@ -228,4 +249,3 @@ p {
     margin-top: 10px;
     width: 200px;
 }
-
