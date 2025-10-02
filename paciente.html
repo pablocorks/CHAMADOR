@@ -6,9 +6,14 @@
     <title>Área do Paciente</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
     <div id="tela-inicial" class="container-central">
+        
+        <img src="icons/logo.jpg" alt="Logo do Consultório" class="logo-paciente" onerror="this.style.display='none'">
+
         <div class="conteudo-principal" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
             <h1 class="titulo-grande">SEJA BEM-VINDO(A)</h1>
             <button id="btn-avisar" class="botao botao-grande">CLIQUE AQUI PARA<br>AVISAR QUE CHEGOU</button>
@@ -18,8 +23,7 @@
                 <p id="ultimo-nome"></p>
             </div>
         </div>
-
-        </div>
+    </div>
 
     <div id="tela-nome" class="container-central container-input-alto" style="display: none;">
         <div class="input-container">
@@ -36,6 +40,8 @@
 
     <div id="overlay-obrigado" class="overlay-mensagem">
         <p>Obrigado,<br>agora é só aguardar!</p>
+        
+        <img src="icons/avaliacao.png" alt="Avalie nosso atendimento" class="qr-code-avaliacao" onerror="this.style.display='none'">
     </div>
 
     <div id="overlay-senha" class="container-central">
