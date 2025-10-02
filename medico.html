@@ -6,6 +6,8 @@
     <title>Área do Médico</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
     <div style="width: 100%; text-align: center;">
@@ -16,20 +18,19 @@
                     <th>Nome do Paciente</th>
                     <th>Hora de Chegada</th>
                     <th>Tempo de Espera</th>
-                    <th colspan="2">Ações</th> <!-- AJUSTADO -->
+                    <th colspan="2">Ações</th>
                 </tr>
             </thead>
             <tbody id="corpo-tabela">
-                <!-- Linhas serão inseridas aqui via JavaScript -->
-            </tbody>
+                </tbody>
         </table>
     </div>
 
-    <!-- Scripts do Firebase -->
+    <audio id="audio-notificacao" src="audio/notificacao.mp3"></audio>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     
-    <!-- Nosso script -->
     <script src="script-medico.js"></script>
 </body>
 </html>
