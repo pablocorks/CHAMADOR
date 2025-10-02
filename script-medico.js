@@ -15,8 +15,10 @@ const database = firebase.database();
 const pacientesRef = database.ref('pacientes');
 
 const corpoTabela = document.getElementById('corpo-tabela');
+const audioNotificacao = document.getElementById('audio-notificacao'); // NOVO
 const timers = {};
 
+// ... (funções formatarTempoEspera, chamarPaciente, removerPaciente permanecem as mesmas) ...
 function formatarTempoEspera(dataChegada) {
     const agora = new Date();
     const chegada = new Date(dataChegada);
@@ -27,20 +29,16 @@ function formatarTempoEspera(dataChegada) {
     return `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
 }
 
-// NOVO: Função apenas para chamar (não remove)
 function chamarPaciente(id, nome) {
-    // 1. Define o paciente que está sendo chamado no banco
     database.ref('chamada_atual').set({ id: id, nome: nome });
-    // 2. Define o paciente como o "último chamado" para exibição
     database.ref('ultimo_chamado').set({ id: id, nome: nome });
+    setTimeout(() => {
+        database.ref('chamada_atual').remove();
+    }, 10000);
 }
 
-// NOVO: Função para remover o paciente da lista
 function removerPaciente(id) {
-    // Remove o paciente da lista de espera
     pacientesRef.child(id).remove();
-
-    // Verifica se o paciente removido era o "último chamado" e limpa
     database.ref('ultimo_chamado').once('value', (snapshot) => {
         const ultimo = snapshot.val();
         if (ultimo && ultimo.id === id) {
@@ -49,14 +47,21 @@ function removerPaciente(id) {
     });
 }
 
+
 // Ouve por novos pacientes adicionados
 pacientesRef.on('child_added', snapshot => {
+    // NOVO: Toca o som de notificação
+    if (audioNotificacao) {
+        audioNotificacao.play().catch(error => {
+            console.log("O áudio foi bloqueado pelo navegador. Interaja com a página para ativá-lo.");
+        });
+    }
+
     const paciente = snapshot.val();
     const id = snapshot.key;
 
     const tr = document.createElement('tr');
     tr.setAttribute('data-id', id);
-    // AJUSTADO: Adiciona os dois botões
     tr.innerHTML = `
         <td>${paciente.nome}</td>
         <td>${new Date(paciente.horaChegada).toLocaleTimeString('pt-BR')}</td>
