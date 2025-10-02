@@ -19,32 +19,27 @@ const telaNome = document.getElementById('tela-nome');
 const telaChamada = document.getElementById('tela-chamada');
 const overlayObrigado = document.getElementById('overlay-obrigado');
 const overlaySenha = document.getElementById('overlay-senha');
-
 const btnAvisar = document.getElementById('btn-avisar');
 const btnOk = document.getElementById('btn-ok');
 const inputNome = document.getElementById('input-nome');
 const nomePacienteChamado = document.getElementById('nome-paciente-chamado');
 const audioChamada = document.getElementById('audio-chamada');
-
 const containerUltimoChamado = document.getElementById('container-ultimo-chamado');
 const ultimoNome = document.getElementById('ultimo-nome');
-
 const inputSenha = document.getElementById('input-senha');
 const btnConfirmarSenha = document.getElementById('btn-confirmar-senha');
 const btnCancelarSaida = document.getElementById('btn-cancelar-saida');
-
-// --- Lógica de Kiosk Mode (Tela Cheia e Senha) ---
 let isLocked = false;
 
 function enterKioskMode() {
     const element = document.documentElement;
     if (element.requestFullscreen) {
         element.requestFullscreen();
-    } else if (element.mozRequestFullScreen) { /* Firefox */
+    } else if (element.mozRequestFullScreen) {
         element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    } else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) { /* IE/Edge */
+    } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
     }
     isLocked = true;
@@ -82,8 +77,6 @@ btnCancelarSaida.addEventListener('click', () => {
     inputSenha.value = '';
 });
 
-
-// Funções para trocar de tela
 function mostrarTelaInicial() {
     telaInicial.style.display = 'flex';
     telaNome.style.display = 'none';
@@ -98,7 +91,6 @@ function mostrarTelaNome() {
     inputNome.focus();
 }
 
-// Event Listeners dos botões
 if (btnAvisar) {
     btnAvisar.addEventListener('click', mostrarTelaNome);
 }
@@ -113,23 +105,17 @@ if (btnOk) {
                 horaChegada: dataChegada,
                 status: 'esperando'
             });
-            
             inputNome.value = '';
-            
-            // Mostra mensagem de "Obrigado" por 12 segundos (TEMPO DOBRADO)
             overlayObrigado.style.display = 'flex';
             setTimeout(() => {
                 overlayObrigado.style.display = 'none';
                 mostrarTelaInicial();
-            }, 12000); // <-- VALOR ALTERADO AQUI
-
+            }, 12000);
         } else {
             alert('Por favor, digite seu nome.');
         }
     });
 }
-
-// --- Lógica de Tempo Real ---
 
 const chamadaRef = database.ref('chamada_atual');
 chamadaRef.on('value', (snapshot) => {
@@ -149,7 +135,7 @@ chamadaRef.on('value', (snapshot) => {
         if (audioChamada) {
             audioChamada.pause();
             audioChamada.currentTime = 0;
-            audioChamada.onended = null; 
+            audioChamada.onended = null;
         }
     }
 });
@@ -165,7 +151,6 @@ ultimoChamadoRef.on('value', (snapshot) => {
     }
 });
 
-// Registrar o Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').then(registration => {
