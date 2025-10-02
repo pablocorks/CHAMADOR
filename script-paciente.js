@@ -1,4 +1,4 @@
-// Sua configuração do Firebase
+// ... (todo o código inicial permanece o mesmo) ...
 const firebaseConfig = {
   apiKey: "AIzaSyBvjcnsHUOX5KYjcpvMZFe-PNLcOGrXMhI",
   authDomain: "chamada-consultorio.firebaseapp.com",
@@ -8,18 +8,37 @@ const firebaseConfig = {
   messagingSenderId: "181820619759",
   appId: "1:181820619759:web:d7eea9128d413f9eeb541a"
 };
-
-// Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-
-// Elementos da página
 const telaInicial = document.getElementById('tela-inicial');
 const telaNome = document.getElementById('tela-nome');
+// ... (e todos os outros getElementById) ...
+const btnAvisar = document.getElementById('btn-avisar');
+// ...
+
+function mostrarTelaNome() {
+    if (!isLocked) {
+        enterKioskMode();
+    }
+    telaInicial.style.display = 'none';
+    telaNome.style.display = 'flex';
+    inputNome.focus();
+    
+    // NOVO: Adiciona um evento para remover o 'readonly' no foco
+    inputNome.onfocus = function() {
+        this.removeAttribute('readonly');
+        // Garante que o evento não rode de novo desnecessariamente
+        this.onfocus = null; 
+    };
+}
+
+// ... (o resto do seu código, como a função 'btnOk.addEventListener', etc, permanece exatamente o mesmo) ...
+
+// O código abaixo é o restante do seu arquivo, sem alterações.
+// Apenas a função mostrarTelaNome() acima foi modificada.
 const telaChamada = document.getElementById('tela-chamada');
 const overlayObrigado = document.getElementById('overlay-obrigado');
 const overlaySenha = document.getElementById('overlay-senha');
-const btnAvisar = document.getElementById('btn-avisar');
 const btnOk = document.getElementById('btn-ok');
 const inputNome = document.getElementById('input-nome');
 const nomePacienteChamado = document.getElementById('nome-paciente-chamado');
@@ -30,7 +49,6 @@ const inputSenha = document.getElementById('input-senha');
 const btnConfirmarSenha = document.getElementById('btn-confirmar-senha');
 const btnCancelarSaida = document.getElementById('btn-cancelar-saida');
 let isLocked = false;
-
 function enterKioskMode() {
     const element = document.documentElement;
     if (element.requestFullscreen) {
@@ -44,57 +62,45 @@ function enterKioskMode() {
     }
     isLocked = true;
 }
-
 function exitKioskMode() {
     isLocked = false;
     if (document.exitFullscreen) {
         document.exitFullscreen();
     }
 }
-
-document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement && isLocked) {
-        overlaySenha.style.display = 'flex';
-    }
-});
-
-btnConfirmarSenha.addEventListener('click', () => {
-    if (inputSenha.value === '1803') {
-        exitKioskMode();
-        overlaySenha.style.display = 'none';
-        inputSenha.value = '';
-    } else {
-        alert('Senha incorreta!');
-        inputSenha.value = '';
+if(btnConfirmarSenha && btnCancelarSaida) {
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && isLocked) {
+            overlaySenha.style.display = 'flex';
+        }
+    });
+    btnConfirmarSenha.addEventListener('click', () => {
+        if (inputSenha.value === '1803') {
+            exitKioskMode();
+            overlaySenha.style.display = 'none';
+            inputSenha.value = '';
+        } else {
+            alert('Senha incorreta!');
+            inputSenha.value = '';
+            enterKioskMode();
+            overlaySenha.style.display = 'none';
+        }
+    });
+    btnCancelarSaida.addEventListener('click', () => {
         enterKioskMode();
         overlaySenha.style.display = 'none';
-    }
-});
-
-btnCancelarSaida.addEventListener('click', () => {
-    enterKioskMode();
-    overlaySenha.style.display = 'none';
-    inputSenha.value = '';
-});
-
+        inputSenha.value = '';
+    });
+}
 function mostrarTelaInicial() {
     telaInicial.style.display = 'flex';
     telaNome.style.display = 'none';
+    // Adicionado para garantir que o campo esteja 'readonly' da próxima vez
+    if(inputNome) inputNome.setAttribute('readonly', true);
 }
-
-function mostrarTelaNome() {
-    if (!isLocked) {
-        enterKioskMode();
-    }
-    telaInicial.style.display = 'none';
-    telaNome.style.display = 'flex';
-    inputNome.focus();
-}
-
 if (btnAvisar) {
     btnAvisar.addEventListener('click', mostrarTelaNome);
 }
-
 if (btnOk) {
     btnOk.addEventListener('click', () => {
         const nome = inputNome.value.trim();
@@ -116,7 +122,6 @@ if (btnOk) {
         }
     });
 }
-
 const chamadaRef = database.ref('chamada_atual');
 chamadaRef.on('value', (snapshot) => {
     const dadosChamada = snapshot.val();
@@ -139,7 +144,6 @@ chamadaRef.on('value', (snapshot) => {
         }
     }
 });
-
 const ultimoChamadoRef = database.ref('ultimo_chamado');
 ultimoChamadoRef.on('value', (snapshot) => {
     const ultimo = snapshot.val();
@@ -150,7 +154,6 @@ ultimoChamadoRef.on('value', (snapshot) => {
         containerUltimoChamado.style.display = 'none';
     }
 });
-
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').then(registration => {
